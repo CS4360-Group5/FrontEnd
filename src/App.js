@@ -11,8 +11,8 @@ function App() {
   return (
     <div className = "app">
       <div className="wrapper">
-        <div class = "terminal">
-          <div class = "buttongroup">
+        <div className = "terminal">
+          <div className = "buttongroup">
             <ButtonGroup variant="contained" size = "large" color ="primary" aria-label="terminal button group" fullWidth>
               <Button>All</Button>
               <Button>World</Button>
@@ -38,11 +38,11 @@ function App() {
             }
           }}
         /> 
-        <div class ="interact">
+        <div className ="interact">
             {output}        
         </div> 
-        <div class = "hud">
-          <div class = "buttongroup">
+        <div className = "hud">
+          <div className = "buttongroup">
             <ButtonGroup variant="contained" size = "large" color ="primary" aria-label="hud button group" fullWidth>
               <Button>Map</Button>
               <Button>Inventory</Button>
@@ -50,7 +50,7 @@ function App() {
             </ButtonGroup>
           </div>
         </div>
-        <div class = "character">
+        <div className = "character">
           <strong>Character</strong>
         </div>
       </div>
