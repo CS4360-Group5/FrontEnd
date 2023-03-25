@@ -5,7 +5,7 @@ const Registration = ({ setAuthenticated }) => {
   const [email, setEmail] = useState('');
   const [gamerTag, setGamerTag] = useState('');
   const [password, setPassword] = useState('');
-  const [status, setStatus] = useState('');
+  const [status, setStatus] = useState('Offline');
 
   const handleRegister = (e) => {
     e.preventDefault();
