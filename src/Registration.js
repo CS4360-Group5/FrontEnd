@@ -39,9 +39,6 @@ const Registration = ({ setAuthenticated }) => {
         <label>Password:</label>
         <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
         <br />
-        <label>Status:</label>
-        <input type="text" value={status} onChange={(e) => setStatus(e.target.value)} />
-        <br />
         <button type="submit">Register</button>
       </form>
     </div>

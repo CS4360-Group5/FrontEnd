@@ -9,14 +9,6 @@ const Navbar = ({ authenticated, onLogout }) => {
         <li className="navbar-item">
           <Link to="/">Home</Link>
         </li>
-        {authenticated ? (
-          <li className="navbar-item">
-            <Link to="/App">App</Link>
-          </li>
-        ) : null}
-        <li className="navbar-item">
-          <Link to="/about">About</Link>
-        </li>
         <li className="navbar-item">
           {authenticated ? (
             <button onClick={onLogout}>Logout</button>
