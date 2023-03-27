@@ -8,12 +8,18 @@ const Login = ({ setAuthenticated, authenticated }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
-  const [showRegistrationForm, setShowRegistrationForm] = useState(false);
+  const [showLoginForm, setShowLoginForm] = useState(true);
+  const [responseData, setResponseData] = useState(null); // added state for response data
+  const [showRegistrationSuccess, setShowRegistrationSuccess] = useState(false); // added state for registration success
   const navigate = useNavigate();
 
   useEffect(() => {
     console.log(authenticated);
-  }, [authenticated]);
+    if (showRegistrationSuccess) {
+      setShowLoginForm(true);
+      setShowRegistrationSuccess(false); // reset showRegistrationSuccess state
+    }
+  }, [authenticated, showRegistrationSuccess]);
 
   const handleLogin = (e) => {
     e.preventDefault();
@@ -29,6 +35,7 @@ const Login = ({ setAuthenticated, authenticated }) => {
         navigate('/');
         setLoginError('');
         console.log(`Logged in as ${email} with gamer tag ${gamerTag} and status ${status}.`);
+        setResponseData(response.data);
       })
       .catch((error) => {
         console.log(error);
@@ -36,45 +43,45 @@ const Login = ({ setAuthenticated, authenticated }) => {
       });
   };
 
-  const handleShowRegistrationForm = () => {
-    setShowRegistrationForm(true);
+  const handleShowLoginForm = () => {
+    setShowLoginForm(true);
   };
 
-  const handleHideRegistrationForm = () => {
-    setShowRegistrationForm(false);
+  const handleShowRegistrationForm = () => {
+    setShowLoginForm(false);
   };
 
   return (
     <div className="login-container">
-      <h2>Login</h2>
-      <form onSubmit={handleLogin}>
-        <label>Email:</label>
-        <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
-        <br />
-        <label>Password:</label>
-        <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
-        <br />
-        <button type="submit">Login</button>
-      </form>
+      <h2>{showLoginForm ? 'Login' : 'Registration'}</h2>
+      {showLoginForm ? (
+        <form onSubmit={handleLogin}>
+          <label>Email:</label>
+          <input type="text" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <br />
+          <label>Password:</label>
+          <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} />
+          <br />
+          <button type="submit">Login</button>
+        </form>
+      ) : (
+        <Registration setShowLoginForm={setShowLoginForm} setShowRegistrationSuccess={setShowRegistrationSuccess} />
+      )}
       {loginError && <p style={{ color: 'red' }}>{loginError}</p>}
-      {!showRegistrationForm && (
+      {showLoginForm ? (
         <p>
           Don't have an account?{' '}
           <a href="#" onClick={handleShowRegistrationForm}>
             Register here
           </a>
         </p>
-      )}
-      {showRegistrationForm && (
-        <div>
-          <Registration setAuthenticated={setAuthenticated} />
-          <p>
-            Already have an account?{' '}
-            <a href="#" onClick={handleHideRegistrationForm}>
-              Login here
-            </a>
-          </p>
-        </div>
+      ) : (
+        <p>
+          Already have an account?{' '}
+          <a href="#" onClick={handleShowLoginForm}>
+            Login here
+          </a>
+        </p>
       )}
     </div>
   );
