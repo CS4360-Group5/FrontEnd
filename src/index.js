@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter as Router } from 'react-router-dom';
 import './index.css';
@@ -7,7 +7,7 @@ import Login from './Login';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
-const Index = ({ authenticated, setAuthenticated }) => {
+const Index = ({ authenticated, setAuthenticated, responseData }) => {
   const handleLogout = () => {
     setAuthenticated(false);
   };
@@ -15,7 +15,7 @@ const Index = ({ authenticated, setAuthenticated }) => {
   if (authenticated) {
     return (
       <React.StrictMode>
-        <Navbar authenticated={authenticated} onLogout={handleLogout} />
+        <Navbar authenticated={authenticated} responseData={responseData} onLogout={handleLogout} />
         <App onLogout={handleLogout} authenticated={authenticated} setAuthenticated={setAuthenticated} />
       </React.StrictMode>
     );
@@ -32,26 +32,43 @@ const Index = ({ authenticated, setAuthenticated }) => {
 const root = createRoot(document.getElementById('root'));
 
 const LoginPageWithAuthentication = () => {
-  const [authenticated, setAuthenticated] = React.useState(false);
+  const [authenticated, setAuthenticated] = useState(false);
+  const [responseData, setResponseData] = useState('null');
 
   const handleLogout = () => {
+    setResponseData('null');
     setAuthenticated(false);
   };
 
-  if (authenticated) {
-    return (
-      <React.Fragment>
-        <Index authenticated={authenticated} setAuthenticated={setAuthenticated} />
-      </React.Fragment>
-    );
-  } else {
-    return (
-      <React.Fragment>
-        <Navbar authenticated={authenticated} />
-        <Login setAuthenticated={setAuthenticated} authenticated={authenticated} />
-      </React.Fragment>
-    );
-  }
+  const handleLogin = (data) => {
+    setResponseData(data);
+    setAuthenticated(true);
+  };
+
+  return (
+    <React.StrictMode>
+      {authenticated ? (
+        <React.Fragment>
+          <Navbar authenticated={authenticated} responseData={responseData} onLogout={handleLogout} />
+          <App
+            onLogout={handleLogout}
+            authenticated={authenticated}
+            setAuthenticated={setAuthenticated}
+            responseData={responseData}
+          />
+        </React.Fragment>
+      ) : (
+        <React.Fragment>
+          <Navbar authenticated={authenticated} />
+          <Login
+            setAuthenticated={setAuthenticated}
+            authenticated={authenticated}
+            setResponseData={handleLogin}
+          />
+        </React.Fragment>
+      )}
+    </React.StrictMode>
+  );
 };
 
 root.render(
