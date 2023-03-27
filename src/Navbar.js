@@ -2,7 +2,9 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import './Navbar.css';
 
-const Navbar = ({ authenticated, onLogout }) => {
+const Navbar = ({ authenticated, onLogout, responseData }) => {
+  const gamerTag = responseData ? responseData.gamerTag : null;
+
   return (
     <nav>
       <ul className="navbar">
@@ -17,7 +19,11 @@ const Navbar = ({ authenticated, onLogout }) => {
           )}
         </li>
       </ul>
-      {authenticated ? <p>You are logged in.</p> : <p>You are not logged in.</p>}
+      {authenticated && responseData ? (
+        <p>Welcome {gamerTag}!</p>
+      ) : (
+        <p>You are not logged in.</p>
+      )}
     </nav>
   );
 };

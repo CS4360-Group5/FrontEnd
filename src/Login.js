@@ -4,12 +4,11 @@ import { useNavigate } from 'react-router-dom';
 import Registration from './Registration';
 import styles from './Login.module.css';
 
-const Login = ({ setAuthenticated, authenticated }) => {
+const Login = ({ setAuthenticated, setResponseData, authenticated }) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [loginError, setLoginError] = useState('');
   const [showLoginForm, setShowLoginForm] = useState(true);
-  const [responseData, setResponseData] = useState(null); // added state for response data
   const [showRegistrationSuccess, setShowRegistrationSuccess] = useState(false); // added state for registration success
   const navigate = useNavigate();
 
