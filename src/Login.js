@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
-import './Login.css';
 import Registration from './Registration';
+import styles from './Login.module.css';
 
 const Login = ({ setAuthenticated, authenticated }) => {
   const [email, setEmail] = useState('');
@@ -52,7 +52,7 @@ const Login = ({ setAuthenticated, authenticated }) => {
   };
 
   return (
-    <div className="login-container">
+    <div className={styles['login-container']}>
       <h2>{showLoginForm ? 'Login' : 'Registration'}</h2>
       {showLoginForm ? (
         <form onSubmit={handleLogin}>
