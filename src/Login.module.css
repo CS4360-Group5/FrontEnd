@@ -1,0 +1,44 @@
+.login-container {
+    background-color: #fff;
+    padding: 20px;
+    border: 1px solid #ccc;
+    margin: 0 auto;
+    width: 50%;
+  }
+  
+  .login-container input[type="text"],
+  .login-container input[type="password"] {
+    background-color: rgb(209, 209, 247);
+    border: 1px solid #ccc;
+    padding: 8px;
+    margin-bottom: 10px;
+    color: black;
+  }
+  
+  .login-container button {
+    background-color: #4CAF50;
+    color: white;
+    padding: 10px;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .login-container button:hover {
+    background-color: #45a049;
+  }
+  
+  .login-container p {
+    margin-top: 10px;
+  }
+  
+  .login-container a {
+    color: blue;
+  }
+  
+  .login-container a:hover {
+    text-decoration: underline;
+  }
+  
+  .login-container .error {
+    color: red;
+  }
