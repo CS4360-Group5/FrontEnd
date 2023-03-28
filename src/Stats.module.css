@@ -1,0 +1,14 @@
+.stats-header {
+  font-weight: bold;
+  color: white;
+}
+
+.stats-table td:first-child {
+  font-weight: bold;
+  color: white;
+}
+
+.stats-table td:last-child {
+  text-align: right;
+  color: white;
+}
