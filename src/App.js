@@ -1,24 +1,47 @@
 import logo from './logo.svg';
 import './App.css';
 import * as React from 'react';
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
+import { spacing } from '@mui/system';
+import ToggleButton from '@mui/material/ToggleButton';
+import ToggleButtonGroup from '@mui/material/ToggleButtonGroup';
+import LinearProgress from '@mui/material/LinearProgress';
+import Box from '@mui/material/Box';
+import Typography from '@mui/material/Typography'
 import { useState } from "react";
+
+function viewHUD({view}) {
+  if (view == 'map') {
+    return (<div>MAP VIEW</div>);
+  } else if (view == 'inventory') {
+    return (<div>INVENTORY VIEW</div>);
+  } else if (view == 'stats') {
+    return (<div>STAT VIEW</div>);
+  } else {
+    return (<div>TESTING</div>);
+  }
+}
 
 function App() {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
+  const [currentChat, setCurrentChat] = React.useState('all');
+  const [currentHUD, setCurrentHUD] = React.useState('map');
+  const styles = { 
+    "&.MuiToggleButton-root.Mui-selected": {color: "black", backgroundColor: "white", fontWeight: "bold"},
+    "&.MuiToggleButton-root": {color: "black", backgroundColor: '#BFBFBF'}
+  }
+
   return (
     <div className = "app">
       <div className="wrapper">
         <div className = "terminal">
           <div className = "buttongroup">
-            <ButtonGroup variant="contained" size = "large" color ="primary" aria-label="terminal button group" fullWidth>
-              <Button>All</Button>
-              <Button>World</Button>
-              <Button>Trade</Button>
-              <Button>Chat</Button>
-            </ButtonGroup>
+            <ToggleButtonGroup color="primary" value={currentChat} exclusive onChange={(event, newChat) => {setCurrentChat(newChat);}} aria-label="terminal button group" fullWidth>
+              <ToggleButton value="all" sx={styles}>ALL</ToggleButton>
+              <ToggleButton value="world" sx={styles}>WORLD</ToggleButton>
+              <ToggleButton value="trade" sx={styles}>TRADE</ToggleButton>
+              <ToggleButton value="chat" sx={styles}>CHAT</ToggleButton>
+            </ToggleButtonGroup>
           </div>
         </div> 
         <input 
@@ -43,15 +66,32 @@ function App() {
         </div> 
         <div className = "hud">
           <div className = "buttongroup">
-            <ButtonGroup variant="contained" size = "large" color ="primary" aria-label="hud button group" fullWidth>
-              <Button>Map</Button>
-              <Button>Inventory</Button>
-              <Button>Stats</Button>
-            </ButtonGroup>
+            <ToggleButtonGroup color="primary" value={currentHUD} exclusive onChange={(event, newHUD) => {setCurrentHUD(newHUD);}} aria-label="hud button group" fullWidth>
+              <ToggleButton value="map" sx={styles}>MAP</ToggleButton>
+              <ToggleButton value="inventory" sx={styles}>INVENTORY</ToggleButton>
+              <ToggleButton value="stats" sx={styles}>STATS</ToggleButton>
+            </ToggleButtonGroup>
           </div>
         </div>
         <div className = "character">
-          <strong>Character</strong>
+          <Box sx={{display: 'flex', flexDirection: 'column', flexGrow: 1, m:1, height: '100%'}}>
+            <div>
+              <Typography fontWeight={'bold'} color={'white'}>Health</Typography>
+              <LinearProgress style={{height: '10px'}} sx={{border: 1, borderRadius: 2, borderColor: 'white',m: 1, width: '97%', backgroundColor: 'black', '& .MuiLinearProgress-bar': {backgroundColor: 'red'}}} variant='determinate' value='90'/>
+            </div>
+            <div>
+              <Typography fontWeight={'bold'} color={'white'}>Mana</Typography>
+              <LinearProgress style={{height: '10px'}} sx={{border: 1, borderRadius: 2, borderColor: 'white',m: 1, width: '97%', backgroundColor: 'black', '& .MuiLinearProgress-bar': {backgroundColor: 'aqua'}}} variant='determinate' value='25'/>
+            </div>
+            <div>
+              <Typography fontWeight={'bold'} color={'white'}>Experience</Typography>
+              <LinearProgress style={{height: '10px'}} sx={{border: 1, borderRadius: 2, borderColor: 'white', m: 1, width: '97%', backgroundColor: 'black', '& .MuiLinearProgress-bar': {backgroundColor: 'lime'}}} variant='determinate' value='50'/>
+            </div>
+            <div>
+              <Typography fontWeight={'bold'} color={'white'}>Moves</Typography>
+              <LinearProgress style={{height: '10px'}} sx={{border: 1, borderRadius: 2, borderColor: 'white',m: 1, width: '97%', backgroundColor: 'black', '& .MuiLinearProgress-bar': {backgroundColor: 'gold'}}} variant='determinate' value='10'/>
+            </div>
+          </Box>
         </div>
       </div>
     </div>
