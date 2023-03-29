@@ -5,6 +5,11 @@ import './Navbar.css';
 const Navbar = ({ authenticated, onLogout, responseData }) => {
   const gamerTag = responseData ? responseData.gamerTag : null;
 
+  const handleCharactersClick = () => {
+    const url = '/profiles?authenticated=' + authenticated + '&gamerTag=' + encodeURIComponent(responseData.gamerTag);
+    window.open(url, 'Characters', 'width=600,height=400');
+  };
+
   return (
     <nav>
       <ul className="navbar">

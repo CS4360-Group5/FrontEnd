@@ -50,7 +50,7 @@ const LoginPageWithAuthentication = () => {
   const [responseData, setResponseData] = useState("null");
 
   const handleLogout = () => {
-    setResponseData("null");
+    setResponseData('null');
     setAuthenticated(false);
   };
 
