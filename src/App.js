@@ -6,7 +6,7 @@ import ToggleButtonGroup from "@mui/material/ToggleButtonGroup";
 import LinearProgress from "@mui/material/LinearProgress";
 import Box from "@mui/material/Box";
 import Typography from "@mui/material/Typography";
-import { useState } from "react";
+import {useEffect, useState } from "react";
 import Map from "./Map";
 import Inventory from "./Inventory";
 import Stats from "./Stats";
@@ -36,6 +36,10 @@ function App({ responseData }) {
     },
     "&.MuiToggleButton-root": { color: "black", backgroundColor: "#BFBFBF" },
   };
+
+  useEffect(() => {
+    setOutput(`Welcome ${responseData.gamerTag}, for help type "help"`);
+  }, [responseData.gamerTag]);
 
   return (
     <div className="app">
@@ -74,9 +78,41 @@ function App({ responseData }) {
           onKeyDown={(e) => {
             if (e.key === "Enter") {
               let newOutput = "";
-              newOutput = output + "\n" + responseData.gamerTag +": " + input;
-              // eslint-disable-next-line default-case
-              switch (input) {
+              let command = input.trim().toLowerCase(); // Get the user's command and convert it to lowercase
+              switch (command) {
+                case "move north":
+                case "n":
+                  newOutput = output + "\n" + `You move north.`;
+                  // updatePlayerPosition("north"); // Call a function to update the player's position
+                  break;
+                case "move south":
+                case "s":
+                  // Handle the "south" command
+                  newOutput = output + "\n" + `You move south.`;
+                  // updatePlayerPosition("south");
+                  break;
+                case "move east":
+                case "e":
+                  // Handle the "east" command
+                  newOutput = output + "\n" + `You move east.`;
+                  // updatePlayerPosition("east");
+                  break;
+                case "move west":
+                case "w":
+                  // Handle the "west" command
+                  newOutput = output + "\n" + `You move west.`;
+                  // updatePlayerPosition("west");
+                  break;
+                case "help":
+                  // List all available commands
+                  newOutput =
+                    output +
+                    "\nAvailable commands: move north, move south, move east, move west, help";
+                  break;
+                default:
+                  // Chat
+                  newOutput =
+                    output + "\n" + `${responseData.gamerTag}: ${input}`;
               }
               setOutput(newOutput);
               setInput("");
