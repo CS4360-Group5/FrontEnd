@@ -114,7 +114,7 @@ function App({ responseData, zoneResponseData }) {
                   // List all available commands
                   newOutput =
                     output +
-                    "\nAvailable commands: move north, move south, move east, move west, help";
+                    "\nAvailable commands: move north, move south, move east, move west, zone, help";
                   break;
                 case "zone":
                   // Display the zone you are in
