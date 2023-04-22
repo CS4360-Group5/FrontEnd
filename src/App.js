@@ -11,6 +11,7 @@ import Map from "./Map";
 import Inventory from "./Inventory";
 import Stats from "./Stats";
 
+
 function viewHUD({ view }) {
   if (view == "map") {
     return <Map />;
@@ -23,11 +24,13 @@ function viewHUD({ view }) {
   }
 }
 
-function App({ responseData }) {
+function App({ responseData, zoneResponseData }) {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [currentChat, setCurrentChat] = React.useState("all");
   const [currentHUD, setCurrentHUD] = React.useState("map");
+  const [currentZone, setCurrentZone] = useState("");
+
   const styles = {
     "&.MuiToggleButton-root.Mui-selected": {
       color: "black",
@@ -40,6 +43,10 @@ function App({ responseData }) {
   useEffect(() => {
     setOutput(`Welcome ${responseData.gamerTag}, for help type "help"`);
   }, [responseData.gamerTag]);
+
+  useEffect(() => {
+    setCurrentZone(zoneResponseData);
+  }, [zoneResponseData]);
 
   return (
     <div className="app">
@@ -109,6 +116,28 @@ function App({ responseData }) {
                     output +
                     "\nAvailable commands: move north, move south, move east, move west, help";
                   break;
+                case "zone":
+                  // Display the zone you are in
+                  if (currentZone == [zoneResponseData]) {
+                    newOutput = output + "\n" + "You are in The Forest.";
+                    break;
+                  } else if (currentZone === [zoneResponseData]) {
+                    newOutput = output + "\n" + "You are in The Desert.";
+                    break;
+                  } else if (currentZone === [zoneResponseData]) {
+                    newOutput = output + "\n" + "You are in The Mountains.";
+                    break;
+                  } else if (currentZone === [zoneResponseData]) {
+                    newOutput = output + "\n" + "You are in The Swamp.";
+                    break;
+                  } else if (currentZone === [zoneResponseData]) {
+                    newOutput = output + "\n" + "You are in The Plains.";
+                    break;
+                  }  else {
+                    console.log(zoneResponseData);
+                    newOutput = output + "\n" + "You are in The Guild.";
+                    break;
+                  }
                 default:
                   // Chat
                   newOutput =

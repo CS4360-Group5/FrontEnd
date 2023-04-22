@@ -5,12 +5,17 @@ import "./index.css";
 import Navbar from "./Navbar";
 import Login from "./Login";
 import App from "./App";
+import Zone from "./Zone";
 import reportWebVitals from "./reportWebVitals";
 
-const Index = ({ authenticated, setAuthenticated, responseData }) => {
+const Index = ({ authenticated, setAuthenticated, responseData, zoneResponseData }) => {
+
+
+
   const handleLogout = () => {
     setAuthenticated(false);
   };
+
 
   if (authenticated) {
     return (
@@ -28,6 +33,9 @@ const Index = ({ authenticated, setAuthenticated, responseData }) => {
             responseData={responseData}
           />
         </div>
+          <Zone
+            zoneResponceData={zoneResponseData}
+          />
       </React.StrictMode>
     );
   } else {
