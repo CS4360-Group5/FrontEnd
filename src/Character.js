@@ -30,18 +30,91 @@ const ButtonToggle = styled(Button)`
     `}
 `
 
-const classes = ['Mage', 'Assassin', 'Warrior', 'Archer', 'Priest'];
-const origin = ['Human', 'Elf', 'Dwarf', 'Orc', 'Undead'];
+const classes = ['Mage', 'Assassin', 'Warrior'];
+const origin = ['Human', 'Elf', 'Dwarf'];
 const genders = ['Male', 'Female'];
 
-function Character() {
+const Character = ({setCharacterData}) => {
     const [classType, setclassType] = useState('');
     const [origins, setOrigin] = useState('');
     const [gender, setGender] = useState('');
-    const [characterError, setCharacterError] = useState('');
-    const [characterSuccess, setCharacterSuccess] = useState(false);
+    
+    const [mageData, setMageData] = useState({
+        attack: 7,
+        currentCellX: 0,
+        currentCellY: 0,
+        currentLevel: 0,
+        defense: 3,
+        hp: 100,
+        profile: {
+            account: {
+                email,
+                gamerTag,
+                password,
+                status,
+            },
+            accountId: 1,
+            classType: classType,
+            gender: gender,
+            active: true,
+            origin: origins,
+            profileName,
+        },
+        profileId: 1,
+        xp: 0
+    });
 
-    const handleSubmit = (e) => {
+    const [assassinData, setAssassinData] = useState({
+        attack: 9,
+        currentCellX: 0,
+        currentCellY: 0,
+        currentLevel: 0,
+        defense: 1,
+        hp: 75,
+        profile: {
+            account: {
+                email,
+                gamerTag,
+                password,
+                status,
+            },
+            accountId: 1,
+            classType: classType,
+            gender: gender,
+            active: true,
+            origin: origins,
+            profileName,
+        },
+        profileId: 1,
+        xp: 0
+    });
+
+    const [warriorData, setWarriorData] = useState({
+        attack: 4,
+        currentCellX: 0,
+        currentCellY: 0,
+        currentLevel: 0,
+        defense: 6,
+        hp: 125,
+        profile: {
+            account: {
+                email,
+                gamerTag,
+                password,
+                status,
+            },
+            accountId: 1,
+            classType: classType,
+            gender: gender,
+            active: true,
+            origin: origins,
+            profileName,
+        },
+        profileId: 1,
+        xp: 0
+});
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         if (!classType || !origins || !gender){
@@ -51,20 +124,33 @@ function Character() {
 
         console.log('You are a ' + gender + ' ' + origins + ' ' + classType + '!');
 
-        axios
-            .post('http://localhost:8080/stats/', {
-            classType,
-            origins,
-            gender,
-        })
-        .then((response) => {
-            setCharacterError('');
-            setCharacterSuccess(true);
-        })
-        .catch((error) => {
-            console.log(error);
-            setCharacterError("Please select all options before submitting!");
-        });
+        if (classType === 'Mage'){
+            try{
+                const response = await axios.post("http://localhost:8080/stats", mageData);
+                console.log(response);
+                setCharacterData(true);
+            } catch (error){
+                console.error(error);
+            }
+        }
+        else if (classType === 'Assassin'){
+            try{
+                const response = await axios.post("http://localhost:8080/stats", assassinData);
+                console.log(response);
+                setCharacterData(true);
+            } catch (error){
+                console.error(error);
+            }
+        }
+        else if (classType === 'Warrior'){
+            try{
+                const response = await axios.post("http://localhost:8080/stats", warriorData);
+                console.log(response);
+                setCharacterData(true);
+            } catch (error){
+                console.error(error);
+            }
+        }
     };
 
     return<>
