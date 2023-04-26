@@ -24,6 +24,7 @@ const Index = ({ authenticated, setAuthenticated, responseData, zoneResponseData
             authenticated={authenticated}
             responseData={responseData}
             onLogout={handleLogout}
+            zoneData={zoneResponseData}
           />
           <div className="app-wrapper">
           <App
@@ -31,11 +32,12 @@ const Index = ({ authenticated, setAuthenticated, responseData, zoneResponseData
             authenticated={authenticated}
             setAuthenticated={setAuthenticated}
             responseData={responseData}
+            zoneData={zoneResponseData}
+          />
+          <Zone
+            zoneData={zoneResponseData}
           />
         </div>
-          <Zone
-            zoneResponceData={zoneResponseData}
-          />
       </React.StrictMode>
     );
   } else {
@@ -56,6 +58,7 @@ const root = createRoot(document.getElementById("root"));
 const LoginPageWithAuthentication = () => {
   const [authenticated, setAuthenticated] = useState(false);
   const [responseData, setResponseData] = useState("null");
+  const [zoneResponseData, setZoneResponseData] = useState("null");
 
   const handleLogout = () => {
     setResponseData('null');
@@ -65,6 +68,10 @@ const LoginPageWithAuthentication = () => {
   const handleLogin = (data) => {
     setResponseData(data);
     setAuthenticated(true);
+  };
+
+  const handleZone = (zonedata) => {
+    setZoneResponseData(zonedata);
   };
 
   return (
@@ -81,6 +88,7 @@ const LoginPageWithAuthentication = () => {
             authenticated={authenticated}
             setAuthenticated={setAuthenticated}
             responseData={responseData}
+            zoneData={zoneResponseData}
           />
         </React.Fragment>
       ) : (
@@ -90,6 +98,7 @@ const LoginPageWithAuthentication = () => {
             setAuthenticated={setAuthenticated}
             authenticated={authenticated}
             setResponseData={handleLogin}
+            setZoneResponseData={handleZone}
           />
         </React.Fragment>
       )}

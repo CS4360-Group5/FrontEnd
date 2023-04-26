@@ -7,7 +7,7 @@ const Zone = ( {setzoneResponseData} ) => {
     const handleZone = (e) => {
         e.preventDefault();
         axios
-            .get('http://localhost:8080/zone')
+            .get('http://localhost:8080/zones')
             .then((response) => {
                 for (let i = 0; i < response.data.length; i++) {
                     console.log(response.data[i]);
