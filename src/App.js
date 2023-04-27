@@ -200,6 +200,9 @@ function App({ responseData, zoneData }) {
                       newOutput = output + "\n" + "You enter The Guild.";
                       setCurrentZone(0);
                       break;
+                  } else if (currentZone === 0) {
+                      newOutput = output + "\n" + "You cannot go in the back. Thats for employees only.";
+                      break;
                   }
                   break;
                 default:
