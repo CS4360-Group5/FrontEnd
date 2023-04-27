@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import styled from 'styled-components';
 import axios from 'axios';
 
@@ -34,7 +34,7 @@ const classes = ['Mage', 'Assassin', 'Warrior'];
 const origin = ['Human', 'Elf', 'Dwarf'];
 const genders = ['Male', 'Female'];
 
-const Character = ({setCharacterData}) => {
+const Character = ({setCharacterData, responseData}) => {
     const [classType, setclassType] = useState('');
     const [origins, setOrigin] = useState('');
     const [gender, setGender] = useState('');
@@ -48,19 +48,19 @@ const Character = ({setCharacterData}) => {
         hp: 100,
         profile: {
             account: {
-                email,
-                gamerTag,
-                password,
-                status,
+                email: responseData.email,
+                gamerTag: responseData.gamerTag,
+                password: responseData.password,
+                status: responseData.status,
             },
-            accountId: 1,
+            accountId: responseData.accountId,
             classType: classType,
             gender: gender,
             active: true,
             origin: origins,
-            profileName,
+            profileName: responseData.profileName,
         },
-        profileId: 1,
+        profileId: responseData.profileId,
         xp: 0
     });
 
@@ -70,22 +70,22 @@ const Character = ({setCharacterData}) => {
         currentCellY: 0,
         currentLevel: 0,
         defense: 1,
-        hp: 75,
+        hp: 100,
         profile: {
             account: {
-                email,
-                gamerTag,
-                password,
-                status,
+                email: responseData.email,
+                gamerTag: responseData.gamerTag,
+                password: responseData.password,
+                status: responseData.status,
             },
-            accountId: 1,
+            accountId: responseData.accountId,
             classType: classType,
             gender: gender,
             active: true,
             origin: origins,
-            profileName,
+            profileName: responseData.profileName,
         },
-        profileId: 1,
+        profileId: responseData.profileId,
         xp: 0
     });
 
@@ -95,24 +95,24 @@ const Character = ({setCharacterData}) => {
         currentCellY: 0,
         currentLevel: 0,
         defense: 6,
-        hp: 125,
+        hp: 100,
         profile: {
             account: {
-                email,
-                gamerTag,
-                password,
-                status,
+                email: responseData.email,
+                gamerTag: responseData.gamerTag,
+                password: responseData.password,
+                status: responseData.status,
             },
-            accountId: 1,
+            accountId: responseData.accountId,
             classType: classType,
             gender: gender,
             active: true,
             origin: origins,
-            profileName,
+            profileName: responseData.profileName, //undefined
         },
-        profileId: 1,
+        profileId: responseData.profileId, // undefined
         xp: 0
-});
+    });
 
     const handleSubmit = async (e) => {
         e.preventDefault();
@@ -123,6 +123,7 @@ const Character = ({setCharacterData}) => {
         }
 
         console.log('You are a ' + gender + ' ' + origins + ' ' + classType + '!');
+        console.log(responseData)
 
         if (classType === 'Mage'){
             try{
