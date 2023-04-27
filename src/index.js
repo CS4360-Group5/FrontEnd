@@ -31,11 +31,12 @@ const Index = ({ authenticated, setAuthenticated, responseData, zoneResponseData
             authenticated={authenticated}
             setAuthenticated={setAuthenticated}
             responseData={responseData}
+            zoneData={zoneResponseData}
+          />
+          <Zone
+            zoneData={zoneResponseData}
           />
         </div>
-          <Zone
-            zoneResponceData={zoneResponseData}
-          />
       </React.StrictMode>
     );
   } else {

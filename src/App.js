@@ -24,12 +24,12 @@ function viewHUD({ view }) {
   }
 }
 
-function App({ responseData, zoneResponseData }) {
+function App({ responseData, zoneData }) {
   const [input, setInput] = useState("");
   const [output, setOutput] = useState("");
   const [currentChat, setCurrentChat] = React.useState("all");
   const [currentHUD, setCurrentHUD] = React.useState("map");
-  const [currentZone, setCurrentZone] = useState("");
+  let [currentZone, setCurrentZone] = useState("");
 
   const styles = {
     "&.MuiToggleButton-root.Mui-selected": {
@@ -43,10 +43,10 @@ function App({ responseData, zoneResponseData }) {
   useEffect(() => {
     setOutput(`Welcome ${responseData.gamerTag}, for help type "help"`);
   }, [responseData.gamerTag]);
-
+  
   useEffect(() => {
-    setCurrentZone(zoneResponseData);
-  }, [zoneResponseData]);
+    setCurrentZone(0);
+  }, []);
 
   return (
     <div className="app">
@@ -112,32 +112,99 @@ function App({ responseData, zoneResponseData }) {
                   break;
                 case "help":
                   // List all available commands
-                  newOutput =
-                    output +
-                    "\nAvailable commands: move north, move south, move east, move west, zone, help";
+                  setOutput( output +"\nAvailable commands: move north, move south, move east, move west, inspect, travel forward, travel back, help");
                   break;
-                case "zone":
+                case "inspect":
                   // Display the zone you are in
-                  if (currentZone == [zoneResponseData]) {
-                    newOutput = output + "\n" + "You are in The Forest.";
-                    break;
-                  } else if (currentZone === [zoneResponseData]) {
-                    newOutput = output + "\n" + "You are in The Desert.";
-                    break;
-                  } else if (currentZone === [zoneResponseData]) {
-                    newOutput = output + "\n" + "You are in The Mountains.";
-                    break;
-                  } else if (currentZone === [zoneResponseData]) {
-                    newOutput = output + "\n" + "You are in The Swamp.";
-                    break;
-                  } else if (currentZone === [zoneResponseData]) {
-                    newOutput = output + "\n" + "You are in The Plains.";
-                    break;
-                  }  else {
-                    console.log(zoneResponseData);
-                    newOutput = output + "\n" + "You are in The Guild.";
-                    break;
+                  if (currentZone === 1) {
+                      newOutput = output + "\n" + "You are in The Forest.";
+                      break;
+                  } else if (currentZone === 2) {
+                      newOutput = output + "\n" + "You are in The Desert.";
+                      break;
+                  } else if (currentZone === 3) {
+                      newOutput = output + "\n" + "You are in The Mountains.";
+                      break;
+                  } else if (currentZone === 4) {
+                      newOutput = output + "\n" + "You are in The Swamp.";
+                      break;
+                  } else if (currentZone === 5) {
+                      newOutput = output + "\n" + "You are in The Plains.";
+                      break;
+                  } else if(currentZone === 6) {
+                      newOutput = output + "\n" + "You are in The Village.";
+                      break;
+                  } else {
+                      //console.log(zoneData);
+                      newOutput = output + "\n" + "You are in The Guild.";
+                      break;
                   }
+                case "travel forward":
+                case "travel f":
+                  // move to the new zone
+                  if (currentZone === 1) {
+                      newOutput = output + "\n" + "You travel to The Mountains.";
+                      setCurrentZone(3);
+                      break;
+                  } else if (currentZone === 2) {
+                      newOutput = output + "\n" + "You travel to The Plains.";
+                      setCurrentZone(5);
+                      break;
+                  } else if (currentZone === 3) {
+                      newOutput = output + "\n" + "You travel to the desert.";
+                      setCurrentZone(2);
+                      break;
+                  } else if (currentZone === 4) { 
+                      newOutput = output + "\n" + "You travel to The Village.";
+                      setCurrentZone(6);
+                      break;
+                  } else if (currentZone === 5) {
+                      newOutput = output + "\n" + "You travel to The Swamp.";
+                      setCurrentZone(4);
+                      break;
+                  } else if (currentZone === 6) {
+                      newOutput = output + "\n" + "You travel to The Forest.";
+                      setCurrentZone(1);
+                      break;
+                  } else if (currentZone === 0) {
+                      newOutput = output + "\n" + "You leave the guild.";
+                      setCurrentZone(6);
+                      break;
+                  }     
+                  break;
+                case "travel backward":
+                case "travel back":
+                case "travel b":
+                  // move to the previous zone
+                  if (currentZone === 1) {
+                      newOutput = output + "\n" + "You travel to The Village.";
+                      setCurrentZone(6);
+                      break;
+                  } else if (currentZone === 2) {
+                      newOutput = output + "\n" + "You travel to The Mountains.";
+                      setCurrentZone(3);
+                      break;
+                  } else if (currentZone === 3) {
+                      newOutput = output + "\n" + "You travel to The Forest.";
+                      setCurrentZone(1);
+                      break;
+                  } else if (currentZone === 4) {
+                      newOutput = output + "\n" + "You travel to The Plains.";
+                      setCurrentZone(5);
+                      break;
+                  } else if (currentZone === 5) {
+                      newOutput = output + "\n" + "You travel to The Desert.";
+                      setCurrentZone(2);
+                      break;
+                  } else if (currentZone === 6) {
+                      newOutput = output + "\n" + "You enter The Guild.";
+                      setCurrentZone(0);
+                      break;
+                  } else if (currentZone === 0) {
+                      newOutput = output + "\n" + "You cannot go in the back. Thats for employees only.";
+                      break;
+                  }
+                  break;
                 default:
                   // Chat
                   newOutput =
