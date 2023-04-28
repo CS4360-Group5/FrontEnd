@@ -30,6 +30,7 @@ function App({ responseData, zoneData }) {
   const [currentChat, setCurrentChat] = React.useState("all");
   const [currentHUD, setCurrentHUD] = React.useState("map");
   let [currentZone, setCurrentZone] = useState("");
+  const [playerPosition, setPlayerPosition] = useState(0);
 
   const styles = {
     "&.MuiToggleButton-root.Mui-selected": {
@@ -112,7 +113,7 @@ function App({ responseData, zoneData }) {
                   break;
                 case "help":
                   // List all available commands
-                  setOutput( output +"\nAvailable commands: move north, move south, move east, move west, inspect, travel forward, travel back, help");
+                  newOutput = output +"\nAvailable commands: move north, move south, move east, move west, inspect, travel forward, travel back, help";
                   break;
                 case "inspect":
                   // Display the zone you are in

@@ -67,6 +67,7 @@ const LoginPageWithAuthentication = () => {
 
   const handleLogin = (data) => {
     setResponseData(data);
+    setCharSelected(true);
     setAuthenticated(true);
   };
 
