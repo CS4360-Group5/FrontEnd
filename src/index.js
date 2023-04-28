@@ -91,7 +91,7 @@ const LoginPageWithAuthentication = () => {
               authenticated={authenticated}
               setAuthenticated={setAuthenticated}
               responseData={responseData}
-              setCharSelected={setCharSelected}
+              setCharSelected={charSelected}
             />)}
         </React.Fragment>) : (
         <React.Fragment>
