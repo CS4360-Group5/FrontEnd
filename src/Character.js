@@ -34,10 +34,12 @@ const classes = ['Mage', 'Assassin', 'Warrior'];
 const origin = ['Human', 'Elf', 'Dwarf'];
 const genders = ['Male', 'Female'];
 
-const Character = ({setCharacterData, responseData}) => {
+const Character = ({setShowProfileForm, responseData, setShowCharacterSuccess}) => {
     const [classType, setclassType] = useState('');
     const [origins, setOrigin] = useState('');
     const [gender, setGender] = useState('');
+    const [characterError, setCharacterError] = useState('');
+    const [characterData, setCharacterData] = useState(false);
     
     const [mageData, setMageData] = useState({
         attack: 7,
@@ -129,6 +131,7 @@ const Character = ({setCharacterData, responseData}) => {
             try{
                 const response = await axios.post("http://localhost:8080/stats", mageData);
                 console.log(response);
+                setCharacterError('');
                 setCharacterData(true);
             } catch (error){
                 console.error(error);
@@ -138,6 +141,7 @@ const Character = ({setCharacterData, responseData}) => {
             try{
                 const response = await axios.post("http://localhost:8080/stats", assassinData);
                 console.log(response);
+                setCharacterError('');
                 setCharacterData(true);
             } catch (error){
                 console.error(error);
@@ -147,12 +151,18 @@ const Character = ({setCharacterData, responseData}) => {
             try{
                 const response = await axios.post("http://localhost:8080/stats", warriorData);
                 console.log(response);
+                setCharacterError('');
                 setCharacterData(true);
             } catch (error){
                 console.error(error);
             }
         }
     };
+
+    if(characterData){
+        setShowCharacterSuccess(true);
+        setShowProfileForm(true);
+    }
 
     return<>
     <h1>Character Creation (Note: you cannot change your character once submitted)</h1>
@@ -194,6 +204,12 @@ const Character = ({setCharacterData, responseData}) => {
         <h2>Once done please click submit!</h2>
         <Button onClick={handleSubmit}>Submit</Button>
     </div>
+    {characterError && <p style={{ color: 'red' }}>{characterError}</p>}
+    {characterData && (
+        <div>
+            <p>Character Created!</p>
+            </div>
+        )}
     </>
 }
 

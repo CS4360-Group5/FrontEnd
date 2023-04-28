@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import axios from 'axios';
 import styled from 'styled-components';
 import Character from "./Character";
+import { useNavigate } from "react-router-dom";
 
 const Button = styled.button`
     background-color: #2BDF90;
@@ -24,8 +25,8 @@ const Button = styled.button`
 
 const ButtonToggle = styled(Button)`
     opacity: 0.5;
-    ${({ active }) => 
-    active && 
+    ${({ active }) =>
+    active &&
     `
     opacity: 1;
     `}
@@ -35,42 +36,71 @@ const Profiles = ({ authenticated, responseData, onProfilesLoaded }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [profileName, setProfileName] = useState([]);
   const [profileData, setProfileData] = useState([]);
+  const [profileId, setProfileId] = useState([]);
+  const [charSelected, setCharSelected] = useState(false);
+  const [showProfileForm, setShowProfileForm] = useState(true);
+  const [showCharacterSuccess, setShowCharacterSuccess] = useState(false);
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (showCharacterSuccess) {
+      setShowProfileForm(true);
+      setShowCharacterSuccess(false);
+    }
+  }, [authenticated, showCharacterSuccess]);
 
   const handleLoadProfiles = () => {
     setIsLoading(false);
     getAllProfileData();
-    for (let i = 0; i < profileData.length; i++) {
-      console.log(profileData[i].profileName);
+    //for (let i = 0; i < profileData.length; i++) {
+      //console.log(profileData[i].profileName);
+    //}
+  };
+
+  const chooseProfileToPlay = ({profileId, profileName}) => {
+    setCharSelected(true);
+    navigate("/");
+    console.log(profileId + ": " +profileName);
+  };
+
+  const handleCreateProfile = async (e) => {
+    e.preventDefault();
+    if (profileName.length < 1 | profileName === " ") {
+      alert("Please enter a profile name");
+      return;
     }
-  };
 
-  const chooseProfileToPlay = () => {
-
-  };
-
-  const handleCreateProfile = () => {
     console.log(responseData)
     try {
       const response = axios.post('http://localhost:8080/profile',
         {
-            account: {
-              email: responseData.email,
-              gamerTag: responseData.gamerTag,
-              password: responseData.password,
-              status: responseData.status,
-            },
-            accountId: responseData.accountId,
-            classType: "",
-            gender: "",
-            isActive: true,
-            origins: "",
-            profileName: profileName,
+          account: {
+            email: responseData.email,
+            gamerTag: responseData.gamerTag,
+            password: responseData.password,
+            status: responseData.status,
+          },
+          accountId: responseData.accountId,
+          classType: "",
+          gender: "",
+          isActive: true,
+          origins: "",
+          profileName: profileName,
         });
-        const data = response.data;
-        return data;
-      } catch (error) {
-        console.error(error);
-      }
+      const data = response.data;
+      return data;
+      handleShowCharacterForm();
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const handleShowProfileForm = () => {
+    setShowProfileForm(true);
+  };
+
+  const handleShowCharacterForm = () => {
+    setShowProfileForm(false);
   };
 
   const getAllProfileData = async () => {
@@ -84,22 +114,21 @@ const Profiles = ({ authenticated, responseData, onProfilesLoaded }) => {
   }
 
   //useEffect(() => {
-    //const fetchData = async () => {
-      //try {
-        //const data = await getAllProfileData();
-        //setProfileData(data);
-      //} catch (error) {
-        //console.error(error);
-      //}
-    //};
-    //fetchData();
+  //const fetchData = async () => {
+  //try {
+  //const data = await getAllProfileData();
+  //setProfileData(data);
+  //} catch (error) {
+  //console.error(error);
+  //}
+  //};
+  //fetchData();
   //}, []);
 
   if (isLoading) {
     // Simulate loading profiles with a setTimeout
     setTimeout(() => {
       setIsLoading(false);
-      handleLoadProfiles();
     }, 2000);
 
     return (
@@ -116,20 +145,25 @@ const Profiles = ({ authenticated, responseData, onProfilesLoaded }) => {
         <h1>Profiles</h1>
         <div>
           {profileData.map((profile) => (
-          <h2>
-            <Button onClick={chooseProfileToPlay}>{profile.profileName}</Button>
-          </h2>
+            <h2>
+              <Button onClick={() => chooseProfileToPlay(profile)}>{profile.profileName}</Button>
+            </h2>
           ))}
         </div>
         <button onClick={handleLoadProfiles}>Load profiles</button>
         <br />
         <br />
+        <h2>{showProfileForm ? 'Profile' : 'Character'}</h2>
+        {showProfileForm ? (
         <form onSubmit={handleCreateProfile}>
           <label>Create a New Profile</label>
-          <input type="text" value={profileName} onChange={(e) => setProfileName(e.target.value)}/>
+          <input type="text" value={profileName} onChange={(e) => setProfileName(e.target.value)} />
           <br />
           <button type="submit">Submit</button>
         </form>
+        ) : (
+          <Character setShowProfileForm={setShowProfileForm} setShowCharacterSuccess={setShowCharacterSuccess} responseData={responseData} />
+        )}
       </div>
     );
   }

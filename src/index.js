@@ -7,6 +7,7 @@ import Login from "./Login";
 import App from "./App";
 import Zone from "./Zone";
 import reportWebVitals from "./reportWebVitals";
+import Profiles from "./Profiles";
 
 const Index = ({ authenticated, setAuthenticated, responseData, zoneResponseData }) => {
 
@@ -20,12 +21,12 @@ const Index = ({ authenticated, setAuthenticated, responseData, zoneResponseData
   if (authenticated) {
     return (
       <React.StrictMode>
-          <Navbar
-            authenticated={authenticated}
-            responseData={responseData}
-            onLogout={handleLogout}
-          />
-          <div className="app-wrapper">
+        <Navbar
+          authenticated={authenticated}
+          responseData={responseData}
+          onLogout={handleLogout}
+        />
+        <div className="app-wrapper">
           <App
             onLogout={handleLogout}
             authenticated={authenticated}
@@ -42,11 +43,11 @@ const Index = ({ authenticated, setAuthenticated, responseData, zoneResponseData
   } else {
     return (
       <React.StrictMode>
-          <Navbar authenticated={authenticated} />
-          <Login
-            setAuthenticated={setAuthenticated}
-            authenticated={authenticated}
-          />
+        <Navbar authenticated={authenticated} />
+        <Login
+          setAuthenticated={setAuthenticated}
+          authenticated={authenticated}
+        />
       </React.StrictMode>
     );
   }
@@ -56,6 +57,7 @@ const root = createRoot(document.getElementById("root"));
 
 const LoginPageWithAuthentication = () => {
   const [authenticated, setAuthenticated] = useState(false);
+  const [charSelected, setCharSelected] = useState(false);
   const [responseData, setResponseData] = useState("null");
 
   const handleLogout = () => {
@@ -76,15 +78,22 @@ const LoginPageWithAuthentication = () => {
             authenticated={authenticated}
             responseData={responseData}
             onLogout={handleLogout}
-          />
-          <App
-            onLogout={handleLogout}
-            authenticated={authenticated}
-            setAuthenticated={setAuthenticated}
-            responseData={responseData}
-          />
-        </React.Fragment>
-      ) : (
+          />    
+          {charSelected ? (
+            <App
+              onLogout={handleLogout}
+              authenticated={authenticated}
+              setAuthenticated={setAuthenticated}
+              responseData={responseData}
+            />) : (
+            <Profiles
+              onLogout={handleLogout}
+              authenticated={authenticated}
+              setAuthenticated={setAuthenticated}
+              responseData={responseData}
+              setCharSelected={setCharSelected}
+            />)}
+        </React.Fragment>) : (
         <React.Fragment>
           <Navbar authenticated={authenticated} />
           <Login
