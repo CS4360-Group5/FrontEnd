@@ -31,105 +31,92 @@ const ButtonToggle = styled(Button)`
 `
 
 const classes = ['Mage', 'Assassin', 'Warrior'];
-const origin = ['Human', 'Elf', 'Dwarf'];
+const origins = ['Human', 'Elf', 'Dwarf'];
 const genders = ['Male', 'Female'];
 
-const Character = ({setShowProfileForm, responseData, setShowCharacterSuccess}) => {
+const Character = ({setShowProfileForm, responseData}) => {
     const [classType, setclassType] = useState('');
-    const [origins, setOrigin] = useState('');
+    const [origin, setOrigin] = useState('');
     const [gender, setGender] = useState('');
     const [characterError, setCharacterError] = useState('');
     const [characterData, setCharacterData] = useState(false);
-    
-    const [mageData, setMageData] = useState({
-        attack: 7,
-        currentCellX: 0,
-        currentCellY: 0,
-        currentLevel: 0,
-        defense: 3,
-        hp: 100,
-        profile: {
-            account: {
-                email: responseData.email,
-                gamerTag: responseData.gamerTag,
-                password: responseData.password,
-                status: responseData.status,
-            },
-            accountId: responseData.accountId,
-            classType: classType,
-            gender: gender,
-            active: true,
-            origin: origins,
-            profileName: responseData.profileName,
-        },
-        profileId: responseData.profileId,
-        xp: 0
-    });
+    const [profileName, setProfileName] = useState(''); //undefined
 
-    const [assassinData, setAssassinData] = useState({
-        attack: 9,
-        currentCellX: 0,
-        currentCellY: 0,
-        currentLevel: 0,
-        defense: 1,
-        hp: 100,
-        profile: {
-            account: {
-                email: responseData.email,
-                gamerTag: responseData.gamerTag,
-                password: responseData.password,
-                status: responseData.status,
-            },
-            accountId: responseData.accountId,
-            classType: classType,
-            gender: gender,
-            active: true,
-            origin: origins,
-            profileName: responseData.profileName,
-        },
-        profileId: responseData.profileId,
-        xp: 0
-    });
+    const handleCreateProfile = async (e) => {
+    e.preventDefault();
 
-    const [warriorData, setWarriorData] = useState({
-        attack: 4,
-        currentCellX: 0,
-        currentCellY: 0,
-        currentLevel: 0,
-        defense: 6,
-        hp: 100,
-        profile: {
-            account: {
-                email: responseData.email,
-                gamerTag: responseData.gamerTag,
-                password: responseData.password,
-                status: responseData.status,
-            },
-            accountId: responseData.accountId,
-            classType: classType,
-            gender: gender,
-            active: true,
-            origin: origins,
-            profileName: responseData.profileName, //undefined
-        },
-        profileId: responseData.profileId, // undefined
-        xp: 0
-    });
+    if (profileName.length < 1 | profileName === " ") {
+      alert("Please enter a profile name");
+      return;
+    }
+
+    console.log(responseData)
+    try {
+      const response = axios.post('http://localhost:8080/profile',
+        {
+          account: {
+            email: responseData.email,
+            gamerTag: responseData.gamerTag,
+            password: responseData.password,
+            status: responseData.status,
+          },
+          accountId: responseData.accountId,
+          classType: "",
+          gender: "",
+          isActive: true,
+          origins: "",
+          profileName: profileName,
+        });
+      const data = response.data;
+      return data;
+    } catch (error) {
+      console.error(error);
+    }
+  };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        if (!classType || !origins || !gender){
+        if (!classType || !origin || !gender){
             alert("Please select all options before submitting!"); 
             return;
         }
 
-        console.log('You are a ' + gender + ' ' + origins + ' ' + classType + '!');
-        console.log(responseData)
+        if (profileName.length < 1 | profileName === " ") {
+            alert("Please enter a profile name");
+            return;
+        }
+
+        console.log('You are a ' + gender + ' ' + origin + ' ' + classType + '!');
+
+        handleCreateProfile();
 
         if (classType === 'Mage'){
             try{
-                const response = await axios.post("http://localhost:8080/stats", mageData);
+                const response = await axios.post("http://localhost:8080/stats", {
+                    attack: 7,
+                    currentCellX: 0,
+                    currentCellY: 0,
+                    currentLevel: 0,
+                    defense: 3,
+                    hp: 100,
+                    profile: {
+                        account: {
+                            email: responseData.email,
+                            gamerTag: responseData.gamerTag,
+                            password: responseData.password,
+                            status: responseData.status,
+                        },
+                        accountId: responseData.accountId,
+                        classType: classType,
+                        gender: gender,
+                        active: true,
+                        origin: origin,
+                        profileName: profileName,
+                    },
+                    profileId: 1,
+                    xp: 0
+                });
                 console.log(response);
                 setCharacterError('');
                 setCharacterData(true);
@@ -139,7 +126,30 @@ const Character = ({setShowProfileForm, responseData, setShowCharacterSuccess}) 
         }
         else if (classType === 'Assassin'){
             try{
-                const response = await axios.post("http://localhost:8080/stats", assassinData);
+                const response = await axios.post("http://localhost:8080/stats", {
+                    attack: 9,
+                    currentCellX: 0,
+                    currentCellY: 0,
+                    currentLevel: 0,
+                    defense: 1,
+                    hp: 100,
+                    profile: {
+                        account: {
+                            email: responseData.email,
+                            gamerTag: responseData.gamerTag,
+                            password: responseData.password,
+                            status: responseData.status,
+                        },
+                        accountId: responseData.accountId,
+                        classType: classType,
+                        gender: gender,
+                        active: true,
+                        origin: origin,
+                        profileName: profileName,
+                    },
+                    profileId: 2,
+                    xp: 0
+                });
                 console.log(response);
                 setCharacterError('');
                 setCharacterData(true);
@@ -149,7 +159,30 @@ const Character = ({setShowProfileForm, responseData, setShowCharacterSuccess}) 
         }
         else if (classType === 'Warrior'){
             try{
-                const response = await axios.post("http://localhost:8080/stats", warriorData);
+                const response = await axios.post("http://localhost:8080/stats", {
+                    attack: 4,
+                    currentCellX: 0,
+                    currentCellY: 0,
+                    currentLevel: 0,
+                    defense: 6,
+                    hp: 100,
+                    profile: {
+                        account: {
+                            email: responseData.email,
+                            gamerTag: responseData.gamerTag,
+                            password: responseData.password,
+                            status: responseData.status,
+                        },
+                        accountId: responseData.accountId,
+                        classType: classType,
+                        gender: gender,
+                        active: true,
+                        origin: origin,
+                        profileName: profileName,
+                    },
+                    profileId: 3,
+                    xp: 0
+                });
                 console.log(response);
                 setCharacterError('');
                 setCharacterData(true);
@@ -159,14 +192,14 @@ const Character = ({setShowProfileForm, responseData, setShowCharacterSuccess}) 
         }
     };
 
-    if(characterData){
-        setShowCharacterSuccess(true);
-        setShowProfileForm(true);
-    }
-
     return<>
     <h1>Character Creation (Note: you cannot change your character once submitted)</h1>
     <br />
+    <div>
+        <h2>Profile Name</h2>
+          <input type="text" value={profileName} onChange={(e) => setProfileName(e.target.value)} />
+          <br />
+    </div>
     <div>
         <h2>Class type</h2>
         {classes.map(type => (
@@ -180,9 +213,9 @@ const Character = ({setShowProfileForm, responseData, setShowCharacterSuccess}) 
     <br />
     <div>
         <h2>Origin</h2>
-        {origin.map(type => (
+        {origins.map(type => (
             <ButtonToggle
-            active={origins === type}
+            active={origin === type}
             onClick={() => setOrigin(type)}
             >{type}
             </ButtonToggle>
@@ -204,12 +237,6 @@ const Character = ({setShowProfileForm, responseData, setShowCharacterSuccess}) 
         <h2>Once done please click submit!</h2>
         <Button onClick={handleSubmit}>Submit</Button>
     </div>
-    {characterError && <p style={{ color: 'red' }}>{characterError}</p>}
-    {characterData && (
-        <div>
-            <p>Character Created!</p>
-            </div>
-        )}
     </>
 }
 
