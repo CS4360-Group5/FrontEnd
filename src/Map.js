@@ -2,9 +2,9 @@ import React, { useState } from "react";
 import { Stage, Layer, Rect } from "react-konva";
 
 
-const CELL_SIZE = 25;
-const WIDTH = 24;
-const HEIGHT = 10;
+const CELL_SIZE = 35;
+const WIDTH = 26;
+const HEIGHT = 9;
 
 
 function Map() {
