@@ -4,77 +4,64 @@ import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
 import styles from "./Stats.module.css";
 
-
 const Stats = () => {
-  const [stats, setStats] = useState([]);
+  const [stats, setStats] = useState(null);
 
-
-  const getAllStats = async () => {
+  const getStats = async () => {
     try {
-      const response = await axios.get('http://localhost:8080/stats');
+      const response = await axios.get('http://localhost:8080/stats/0');
       const data = response.data;
-      return data;
+      setStats(data);
     } catch (error) {
       console.error(error);
     }
   };
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const data = await getAllStats();
-        setStats(data);
-      } catch (error) {
-        console.error(error);
-      }
-    };
-    fetchData();
+    getStats();
   }, []);
 
   return (
     <div>
-    {stats.length > 0 ? (
-      <div>
+      {stats ? (
         <Box
-        sx={{
-              display: "flex",
-              flexDirection: "column",
-              flexGrow: 1,
-              m: 1,
-              height: "100%",
-            }}>
-          {stats.map((stat) => (
-            <div key={stat.statsId}>
-              <Typography fontWeight={"bold"} fontSize={32} color={"white"}>
-                Profile Name: {stat.profile.profileName}
-              </Typography>
-              <Typography fontWeight={"bold"} fontSize={22} color={"white"}>
-                Class Type: {stat.profile.classType}
-              </Typography>
-              <Typography fontWeight={"bold"} fontSize={22} color={"white"}>
-                Gender: {stat.profile.gender}
-              </Typography>
-              <Typography fontWeight={"bold"} fontSize={22} color={"white"}>
-                HP: {stat.hp}
-              </Typography>
-              <Typography fontWeight={"bold"} fontSize={22} color={"white"}>
-                Attack: {stat.attack}
-              </Typography>
-              <Typography fontWeight={"bold"} fontSize={22} color={"white"}>
-                Defense: {stat.defense}
-              </Typography>
-              <Typography fontWeight={"bold"} fontSize={22} color={"white"}>
-                XP: {stat.xp}
-              </Typography>
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
+            m: 1,
+            height: "100%",
+          }}
+        >
+          <div key={stats.statsId}>
+            <Typography fontWeight={"bold"} fontSize={32} color={"white"}>
+              Profile Name: {stats.profile.profileName}
+            </Typography>
+            <Typography fontWeight={"bold"} fontSize={22} color={"white"}>
+              Class Type: {stats.profile.classType}
+            </Typography>
+            <Typography fontWeight={"bold"} fontSize={22} color={"white"}>
+              Gender: {stats.profile.gender}
+            </Typography>
+            <Typography fontWeight={"bold"} fontSize={22} color={"white"}>
+              HP: {stats.hp}
+            </Typography>
+            <Typography fontWeight={"bold"} fontSize={22} color={"white"}>
+              Attack: {stats.attack}
+            </Typography>
+            <Typography fontWeight={"bold"} fontSize={22} color={"white"}>
+              Defense: {stats.defense}
+            </Typography>
+            <Typography fontWeight={"bold"} fontSize={22} color={"white"}>
+              XP: {stats.xp}
+            </Typography>
           </div>
-        ))}
         </Box>
-      </div>
-    ) : (
-      <p>Loading...</p>
-    )}
-  </div>
+      ) : (
+        <p>Loading...</p>
+      )}
+    </div>
   );
-}
- 
+};
+
 export default Stats;

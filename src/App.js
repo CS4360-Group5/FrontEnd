@@ -31,6 +31,15 @@ function App({ responseData, zoneData }) {
   const [currentHUD, setCurrentHUD] = React.useState("map");
   let [currentZone, setCurrentZone] = useState("");
   const [playerPosition, setPlayerPosition] = useState(0);
+  const [hp, setHp] = useState(0);
+  const [xp, setXp] = useState(0);
+  const [mana, setMana] = useState(0);
+  const [moves, setMoves] = useState(0);
+
+  const hpPercentage = Math.min(({hp} / 100) * 100, 100);
+  const manaPercentage = Math.min(({mana} / 100) * 100, 100);
+  const xpPercentage = Math.min(({xp} / 100) * 100, 100);
+  const movesPercentage = Math.min(({moves} / 100) * 100, 100);
 
   const styles = {
     "&.MuiToggleButton-root.Mui-selected": {
@@ -48,6 +57,18 @@ function App({ responseData, zoneData }) {
   useEffect(() => {
     setCurrentZone(0);
   }, []);
+
+  useEffect(() => {
+    fetch('http://localhost:8080/stats/0')
+      .then(response => response.json())
+      .then(data => {
+        setHp(data.hp);
+        setMana(data.mana);
+        setXp(data.xp);
+        setMoves(data.moves);
+      });
+  }, []);
+
 
   return (
     <div className="app">
@@ -243,92 +264,116 @@ function App({ responseData, zoneData }) {
           {viewHUD({ view: currentHUD })}
         </div>
         <div className="character">
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              flexGrow: 1,
-              m: 1,
-              height: "100%",
-            }}
-          >
-            <div>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            flexGrow: 1,
+            m: 1,
+            height: "100%",
+          }}
+        >
+          <div>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
               <Typography fontWeight={"bold"} color={"white"}>
                 Health
               </Typography>
-              <LinearProgress
-                style={{ height: "10px" }}
-                sx={{
-                  border: 1,
-                  borderRadius: 2,
-                  borderColor: "white",
-                  m: 1,
-                  width: "97%",
-                  backgroundColor: "black",
-                  "& .MuiLinearProgress-bar": { backgroundColor: "red" },
-                }}
-                variant="determinate"
-                value="90"
-              />
+              <Typography fontWeight={"bold"} color={"white"}>
+                {hp} / {hp}
+              </Typography>
             </div>
-            <div>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <Box sx={{ width: "100%", mr: 1 }}>
+                <LinearProgress
+                  sx={{
+                    borderRadius: 2,
+                    borderColor: "white",
+                    height: 10,
+                    backgroundColor: "black",
+                    "& .MuiLinearProgress-bar": { backgroundColor: "red" },
+                  }}
+                  variant="determinate"
+                  value= {hpPercentage}
+                />
+              </Box>
+            </div>
+          </div>
+          <div>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
               <Typography fontWeight={"bold"} color={"white"}>
                 Mana
               </Typography>
-              <LinearProgress
-                style={{ height: "10px" }}
-                sx={{
-                  border: 1,
-                  borderRadius: 2,
-                  borderColor: "white",
-                  m: 1,
-                  width: "97%",
-                  backgroundColor: "black",
-                  "& .MuiLinearProgress-bar": { backgroundColor: "aqua" },
-                }}
-                variant="determinate"
-                value="25"
-              />
+              <Typography fontWeight={"bold"} color={"white"}>
+                25 / 50
+              </Typography>
             </div>
-            <div>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <Box sx={{ width: "100%", mr: 1 }}>
+                <LinearProgress
+                  sx={{
+                    borderRadius: 2,
+                    borderColor: "white",
+                    height: 10,
+                    backgroundColor: "black",
+                    "& .MuiLinearProgress-bar": { backgroundColor: "aqua" },
+                  }}
+                  variant="determinate"
+                  value= '50'
+                />
+              </Box>
+            </div>
+          </div>
+          <div>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
               <Typography fontWeight={"bold"} color={"white"}>
                 Experience
               </Typography>
-              <LinearProgress
-                style={{ height: "10px" }}
-                sx={{
-                  border: 1,
-                  borderRadius: 2,
-                  borderColor: "white",
-                  m: 1,
-                  width: "97%",
-                  backgroundColor: "black",
-                  "& .MuiLinearProgress-bar": { backgroundColor: "lime" },
-                }}
-                variant="determinate"
-                value="50"
-              />
+              <Typography fontWeight={"bold"} color={"white"}>
+                20 / 100
+              </Typography>
             </div>
-            <div>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <Box sx={{ width: "100%", mr: 1 }}>
+                <LinearProgress
+                  sx={{
+                    borderRadius: 2,
+                    borderColor: "white",
+                    height: 10,
+                    backgroundColor: "black",
+                    "& .MuiLinearProgress-bar": { backgroundColor: "lime" },
+                  }}
+                  variant="determinate"
+                  value= '20'
+                />
+              </Box>
+            </div>
+          </div>
+          <div>
+            <div style={{ display: "flex", justifyContent: "space-between" }}>
               <Typography fontWeight={"bold"} color={"white"}>
                 Moves
               </Typography>
-              <LinearProgress
-                style={{ height: "10px" }}
-                sx={{
-                  border: 1,
-                  borderRadius: 2,
-                  borderColor: "white",
-                  m: 1,
-                  width: "97%",
-                  backgroundColor: "black",
-                  "& .MuiLinearProgress-bar": { backgroundColor: "gold" },
-                }}
-                variant="determinate"
-                value="10"
-              />
+              <Typography fontWeight={"bold"} color={"white"}>
+                100 / 100
+              </Typography>
             </div>
-          </Box>
+            <div style={{ display: "flex", alignItems: "center" }}>
+              <Box sx={{ width: "100%", mr: 1 }}>
+                <LinearProgress
+                  sx={{
+                    borderRadius: 2,
+                    borderColor: "white",
+                    height: 10,
+                    backgroundColor: "black",
+                    "& .MuiLinearProgress-bar": { backgroundColor: "gold" },
+                  }}
+                  variant="determinate"
+                  value={movesPercentage}
+                />
+              </Box>
+            </div>
+          </div>
+        </Box>
         </div>
       </div>
     </div>
