@@ -11,6 +11,7 @@ import Divider from "@mui/material/Divider";
 
 function InventoryList() {
   const [inventory, setInventory] = useState([]);
+  const [checkedIndices, setCheckedIndices] = useState([]);
 
   useEffect(() => {
     axios
@@ -23,6 +24,18 @@ function InventoryList() {
       });
   }, []);
 
+  const handleToggle = (index) => {
+    if (checkedIndices.includes(index)) {
+      setCheckedIndices(checkedIndices.filter((i) => i !== index));
+    } else {
+      setCheckedIndices([...checkedIndices, index]);
+    }
+  };
+
+  const isItemChecked = (index) => {
+    return checkedIndices.includes(index);
+  };
+
   return (
     <div>
       <Box
@@ -34,18 +47,28 @@ function InventoryList() {
           height: "100%",
         }}
       >
-        <Typography fontWeight={"bold"} fontSize={32} color={"white"}>
-          Inventory
-        </Typography>
-        <List style={{ maxHeight: "200px", overflowY: "auto" }}>
+        <List style={{ maxHeight: "300px", overflowY: "auto" }}>
           {inventory.map((item, index) => (
             <React.Fragment key={item.inventoryId}>
               <ListItem disablePadding>
                 <ListItemText
-                  primary={item.name}
-                  primaryTypographyProps={{ style: { color: "white" } }}
+                  primary={
+                    isItemChecked(index)
+                      ? `${item.name} (Equipped)`
+                      : item.name
+                  }
+                  primaryTypographyProps={{
+                    style: {
+                      fontSize: "18px",
+                      fontWeight: isItemChecked(index) ? "bold" : "normal",
+                      color: "white",
+                    },
+                  }}
                 />
-                <Checkbox />
+                <Checkbox
+                  checked={isItemChecked(index)}
+                  onChange={() => handleToggle(index)}
+                />
               </ListItem>
               {index < inventory.length - 1 && <Divider />}
             </React.Fragment>
